@@ -94,6 +94,7 @@ The testbench described above operates on smaller numbers to ensure readability 
 * However, it should be noted that the testbench does not account for multiplication results that exceed 512 bits, meaning the A4 register remains 0 in these cases. To thoroughly evaluate the processor's performance with larger numbers and higher multiplication rates, I conducted additional tests using larger values. The results of these extended tests are documented in the [this](Assets/bigres.txt) text file. These tests confirm the processor's capability to handle more complex operations and provide accurate results even when dealing with larger datasets.
 
 Additionally all the code are in Code folder and you are able to read and perform any other tests on desired modules.
+The codes themself are explained in this [ReadMe.md](Code/ReadMe.md) file.
 
 # Contributor
 - Armin Geramirad (St.no: 401110631)
