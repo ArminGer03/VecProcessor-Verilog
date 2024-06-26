@@ -17,10 +17,10 @@ Vector Processor with four 512 bit registers dessigned in verilog with ALU and s
 - ALU Result Storage: Automatically stores the results of ALU operations in registers 2 (A3) and 3 (A4).
 
 ## Operation_Codes
-2'b00: Load operation. the memory value of memory address is loaded on given register address.
-2'b01: Store operation. the register data is stored on given memory address.
-2'b10: Addition operation. The sum of A1 and A2 is stored in A3 and A4.
-2'b11: Multiplication operation. The product of A1 and A2 is stored A3 and A4.
+- 2'b00: Load operation. the memory value of memory address is loaded on given register address.
+- 2'b01: Store operation. the register data is stored on given memory address.
+- 2'b10: Addition operation. The sum of A1 and A2 is stored in A3 and A4.
+- 2'b11: Multiplication operation. The product of A1 and A2 is stored A3 and A4.
 
 # Implementation
 ## ALU module
@@ -41,7 +41,7 @@ The Following Test bench makes sure that the register file and ALU modules are w
 ![regfile Screenshot](Assets/regtbcode.png) 
 
 We get these results according to testbench:
-![regfile Screenshot](Assets/regres.PNG) 
+![reggfile Screenshot](Assets/regres.PNG) 
 
 
 ## Memory Module
@@ -58,10 +58,10 @@ Memory Operations
 - Store Operation (op_code = 2'b01): Writes 16 consecutive 32-bit values from the input 512-bit register (mem_wr_data) into the memory cells starting from the specified address.
 
 The Following Test bench makes sure that the memory is working properly:
-![regfile Screenshot](Assets/memtbcode.png) 
+![memfile Screenshot](Assets/memtbcode.png) 
 
 We get these results according to testbench:
-![regfile Screenshot](Assets/memres.PNG) 
+![memmfile Screenshot](Assets/memres.PNG) 
 
 
 description: 
@@ -69,14 +69,31 @@ First we load a 512 bit number in memory which would take 16 blocks of 32 bit ce
 Then we read data from address 15. Due to the fact that the data was split into 16 parts and we are reading from 15th memory block then we would have the last MSB block of the number as our LSB on read data.
 
 # VecProcessor
-Finally we connect all these modules via the VecProcessor module. The processor is Expected to work via these opcodes that where introduced in [this](#Features) section. Inorder to check the processor we write following testbench. The test bench works with these steps:
-1. First of we initialize the memory with 2 values so that we can test our module.
-2. We give load instruction to load from 0 memory (which holds 1234 value) to register 0 (register A1).
-3. Afterwards we do the exact same thing for 16 memory (which holds 4321 value) and register 1.
-4. Then we give Sum instruction. It's expected to store 1234 + 4321 = 5555 on A3.
-5. Then in order to make sure that the store instruction is working properly we give store instruction to save A3 value on memory (memory address 32).
-6. Then we load the value of memory addres 32 to A1 register.
-7. Then we give multiplication instruction.
+The VecProcessor module connects all the individual components—register file, ALU, and memory—into a cohesive system capable of performing vector operations. The processor operates based on a set of opcodes to load, store, sum, and multiply 512-bit integer vectors. This section details the integration of these components and provides a testbench to verify the functionality of the processor.
 
-# Contributors
+To verify the functionality of the VecProcessor, we use a testbench that performs the following steps:
+1. Initialize Memory: The memory is initialized with specific values to facilitate testing.
+2. Load Instructions:
+- Load the value from memory address 0 (which holds 1234) into register 0 (A1).
+- Load the value from memory address 16 (which holds 8765) into register 1 (A2).
+3. Sum Instruction: Perform the sum operation, expecting 1234 + 8765 = 9999 to be stored in A3.
+4. Store Instruction: Store the value of A3 into memory address 32 to verify the store functionality.
+5. Load from Stored Address: Load the value from memory address 32 back into register 0 (A1) to verify the correctness of the store operation.
+6. Multiply Instruction: Perform the multiply operation with the new values in A1 and A2.
+7. Store and Verify Multiplication: Store the multiplication result in another memory address, load it into another register, and multiply again.
+8. Repeat for Verification: Repeat the above steps several times to ensure all corner cases are handled correctly.
+
+The test bench is the following:
+![vecfile Screenshot](Assets/vectbcode.png) 
+
+with respect to the test bench we get these results for our register:
+![veccfile Screenshot](Assets/vecres.PNG) 
+
+The testbench described above operates on smaller numbers to ensure readability and facilitate verification of the results. This approach allows us to clearly observe the correctness of the operations.
+
+* However, it should be noted that the testbench does not account for multiplication results that exceed 512 bits, meaning the A4 register remains 0 in these cases. To thoroughly evaluate the processor's performance with larger numbers and higher multiplication rates, I conducted additional tests using larger values. The results of these extended tests are documented in the [this](Assets/bigres.txt) text file. These tests confirm the processor's capability to handle more complex operations and provide accurate results even when dealing with larger datasets.
+
+Additionally all the code are in Code folder and you are able to read and perform any other tests on desired modules.
+
+# Contributor
 - Armin Geramirad (St.no: 401110631)
